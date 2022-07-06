@@ -28,19 +28,23 @@ class UniversityList extends StatelessWidget {
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                     ),
                     tileColor: Colors.white,
-                    leading: university.imageUrl == null
-                        ? FlutterLogo()
-                        : Container(
-                            height: 30,
-                            width: 30,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                image: DecorationImage(
-                                    image:
-                                        FileImage(File(university.imageUrl!)),
-                                    fit: BoxFit.cover)),
-                            child: Image.file(File(university.imageUrl!)),
-                          ),
+                    leading: Container(
+                      height: 40,
+                      width: 40,
+                      decoration: university.imageUrl == null
+                          ? BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              image: const DecorationImage(
+                                  image: NetworkImage(
+                                      "https://www.survivorsuk.org/wp-content/uploads/2017/01/no-image.jpg"),
+                                  fit: BoxFit.cover))
+                          : BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              image: DecorationImage(
+                                  image: FileImage(File(university.imageUrl!)),
+                                  fit: BoxFit.cover)),
+                      child: null,
+                    ),
                     trailing: const Icon(Icons.more_vert),
                     title: Text(university.name!),
                   ),
