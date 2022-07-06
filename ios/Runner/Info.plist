@@ -8,6 +8,12 @@
 	<string>Tyba Flutter Challenge</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Photo access warning</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Photo access warning</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Photo access warning</string>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>

@@ -19,4 +19,18 @@ class UniversityProvider extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  void addImage({required University university, required String imagePath}) {
+    _findByName(university.name!).imageUrl = imagePath;
+    notifyListeners();
+  }
+
+  University _findByName(String name) {
+    return universities.singleWhere((element) => element.name == name);
+  }
+
+  void addNumberOfStudets(
+      {required University university, required int numbers}) {
+    _findByName(university.name!).numbersOfStudents = numbers;
+  }
 }

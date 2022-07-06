@@ -1,6 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tyba_flutter_challenge/models/university.dart';
+import 'package:tyba_flutter_challenge/providers/university_provider.dart';
 import 'package:tyba_flutter_challenge/styles.dart';
+import 'package:image_picker/image_picker.dart';
 
 class UniversityDetails extends StatefulWidget {
   @override
@@ -10,9 +15,44 @@ class UniversityDetails extends StatefulWidget {
 class _UniversityDetailsState extends State<UniversityDetails> {
   late University _university;
 
+  void pickUpImage(ImageSource source) async {
+    UniversityProvider _universityProvider =
+        Provider.of<UniversityProvider>(context, listen: false);
+    try {
+      final ImagePicker _picker = ImagePicker();
+      final XFile? image = await _picker.pickImage(source: source);
+      _universityProvider.addImage(
+          university: _university, imagePath: image!.path);
+
+      setState(() {
+        _university.imageUrl = image.path;
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void _changeStudentsNumber(value) {
+    UniversityProvider _universityProvider =
+        Provider.of<UniversityProvider>(context, listen: false);
+    final parsedValue = int.parse(value);
+    try {
+      setState(() {
+        _university.numbersOfStudents = parsedValue;
+      });
+      _universityProvider.addNumberOfStudets(
+          university: _university, numbers: parsedValue);
+    } catch (e) {
+      setState(() {
+        _university.numbersOfStudents = 0;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     _university = ModalRoute.of(context)!.settings.arguments as University;
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -31,29 +71,31 @@ class _UniversityDetailsState extends State<UniversityDetails> {
           ),
         ),
         backgroundColor: Theme.of(context).colorScheme.background,
-        body: Padding(
-          padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 10, left: 5),
-                child: Text(
-                  'Detalles',
-                  style: Theme.of(context).textTheme.headline6,
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10, left: 5),
+                  child: Text(
+                    'Detalles',
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
                 ),
-              ),
-              _buildUniversityDetails(context),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 10, top: 30, left: 5),
-                child: Text(
-                  'Configuracion',
-                  style: Theme.of(context).textTheme.headline6,
+                _buildUniversityDetails(context),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10, top: 30, left: 5),
+                  child: Text(
+                    'Configuracion',
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
                 ),
-              ),
-              _buildUniversityActions(context),
-            ],
+                _buildUniversityActions(context),
+              ],
+            ),
           ),
         ),
         floatingActionButton: FloatingActionButton(
@@ -93,6 +135,8 @@ class _UniversityDetailsState extends State<UniversityDetails> {
         color: Colors.white,
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildItem(textLeft: "Name:", textRight: _university.name!),
           _buildItem(textLeft: "Country:", textRight: _university.country),
@@ -106,7 +150,28 @@ class _UniversityDetailsState extends State<UniversityDetails> {
           _buildItem(
               textLeft: "Domains:", textRight: _university.domains.join(',')),
           _buildItem(
-              textLeft: "Web_pages:", textRight: _university.webPages.join(','))
+              textLeft: "Web_pages:",
+              textRight: _university.webPages.join(',')),
+          _buildItem(
+              textLeft: "Imagen:",
+              textRight: _university.imageUrl == null ? "Si especificar" : ""),
+          _university.imageUrl != null
+              ? Padding(
+                  padding: const EdgeInsets.only(bottom: 10, top: 10),
+                  child: Container(
+                    height: 80,
+                    width: 80,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        image: DecorationImage(
+                            image: FileImage(File(_university.imageUrl!)),
+                            fit: BoxFit.cover)),
+                    child: _university.imageUrl != null
+                        ? Image.file(File(_university.imageUrl!))
+                        : Container(),
+                  ),
+                )
+              : Container(),
         ],
       ),
     );
@@ -130,17 +195,7 @@ class _UniversityDetailsState extends State<UniversityDetails> {
             ),
           ),
           TextField(
-            onChanged: (value) {
-              try {
-                setState(() {
-                  _university.numbersOfStudents = int.parse(value);
-                });
-              } catch (e) {
-                setState(() {
-                  _university.numbersOfStudents = 0;
-                });
-              }
-            },
+            onChanged: _changeStudentsNumber,
             keyboardType: TextInputType.number,
             decoration: inputDecoration.copyWith(
               contentPadding:
@@ -163,7 +218,7 @@ class _UniversityDetailsState extends State<UniversityDetails> {
                 textStyle: const TextStyle(fontSize: 16, color: Colors.blue),
               ),
               onPressed: () {
-                print("");
+                pickUpImage(ImageSource.gallery);
               },
               child: const Text('DESDE LA GALERIA'),
             ),
@@ -175,7 +230,7 @@ class _UniversityDetailsState extends State<UniversityDetails> {
                 textStyle: const TextStyle(fontSize: 16, color: Colors.blue),
               ),
               onPressed: () {
-                print("");
+                pickUpImage(ImageSource.camera);
               },
               child: const Text('DESDE LA CAMARA'),
             ),
