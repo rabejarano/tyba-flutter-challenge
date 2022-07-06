@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tyba_flutter_challenge/models/university.dart';
@@ -26,7 +28,19 @@ class UniversityList extends StatelessWidget {
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                     ),
                     tileColor: Colors.white,
-                    leading: const FlutterLogo(),
+                    leading: university.imageUrl == null
+                        ? FlutterLogo()
+                        : Container(
+                            height: 30,
+                            width: 30,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                image: DecorationImage(
+                                    image:
+                                        FileImage(File(university.imageUrl!)),
+                                    fit: BoxFit.cover)),
+                            child: Image.file(File(university.imageUrl!)),
+                          ),
                     trailing: const Icon(Icons.more_vert),
                     title: Text(university.name!),
                   ),
