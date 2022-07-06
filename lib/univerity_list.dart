@@ -57,12 +57,3 @@ class UniversityList extends StatelessWidget {
     });
   }
 }
-
-class UniversityItem extends StatelessWidget {
-  const UniversityItem({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}
