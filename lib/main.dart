@@ -71,49 +71,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
-        tooltip: 'github',
+        tooltip: 'increment',
         child: const Icon(Icons.add),
-      ),
-    );
-  }
-}
-
-class BasicAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final Widget? widgetLeft;
-  final Widget? widgetRight;
-  final Widget? widgetCenter;
-  final Color backgroundColor;
-  final List<int> flexs;
-
-  const BasicAppBar(
-      {Key? key,
-      this.widgetLeft,
-      this.flexs = const [3, 8, 3],
-      this.widgetCenter,
-      this.widgetRight,
-      this.backgroundColor = Colors.red})
-      : super(key: key);
-
-  @override
-  Size get preferredSize => const Size(double.infinity, 60);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: backgroundColor,
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: SafeArea(
-        bottom: false,
-        maintainBottomViewPadding: false,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(flex: flexs[1], child: widgetLeft ?? Container()),
-            Expanded(flex: flexs[1], child: widgetCenter ?? Container()),
-            Expanded(flex: flexs[2], child: widgetRight ?? Container()),
-          ],
-        ),
       ),
     );
   }
