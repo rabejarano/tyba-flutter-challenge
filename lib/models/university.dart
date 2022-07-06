@@ -6,7 +6,7 @@ class University {
   String? stateProvidence;
   String? imageUrl;
   String? name;
-  int? numbersOfStudeents;
+  int? numbersOfStudents;
 
   University(
       {required this.alphaTwocode,

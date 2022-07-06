@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tyba_flutter_challenge/providers/university_provider.dart';
+import 'package:tyba_flutter_challenge/routes.dart';
 import 'package:tyba_flutter_challenge/univerity_list.dart';
 
 void main() {
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
         }),
       ],
       child: MaterialApp(
+        routes: ROUTES,
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
@@ -46,9 +48,9 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
-    super.initState();
     Future.microtask(
         () => context.read<UniversityProvider>().fetchUniversities());
+    super.initState();
   }
 
   @override
@@ -69,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
-        tooltip: 'Increment',
+        tooltip: 'github',
         child: const Icon(Icons.add),
       ),
     );
