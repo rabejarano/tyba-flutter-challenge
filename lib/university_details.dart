@@ -13,49 +13,54 @@ class _UniversityDetailsState extends State<UniversityDetails> {
   @override
   Widget build(BuildContext context) {
     _university = ModalRoute.of(context)!.settings.arguments as University;
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        iconTheme: const IconThemeData(
-          color: Colors.black,
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          iconTheme: const IconThemeData(
+            color: Colors.black,
+          ),
+          backgroundColor: Theme.of(context).colorScheme.background,
+          elevation: 0,
+          title: Text(
+            _university.name!,
+            style: Theme.of(context).textTheme.headline6,
+          ),
         ),
         backgroundColor: Theme.of(context).colorScheme.background,
-        elevation: 0,
-        title: Text(
-          _university.name!,
-          style: Theme.of(context).textTheme.headline6,
-        ),
-      ),
-      backgroundColor: Theme.of(context).colorScheme.background,
-      body: Padding(
-        padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 10, left: 5),
-              child: Text(
-                'Detalles',
-                style: Theme.of(context).textTheme.headline6,
+        body: Padding(
+          padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10, left: 5),
+                child: Text(
+                  'Detalles',
+                  style: Theme.of(context).textTheme.headline6,
+                ),
               ),
-            ),
-            _buildUniversityDetails(context),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 10, top: 30, left: 5),
-              child: Text(
-                'Configuracion',
-                style: Theme.of(context).textTheme.headline6,
+              _buildUniversityDetails(context),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10, top: 30, left: 5),
+                child: Text(
+                  'Configuracion',
+                  style: Theme.of(context).textTheme.headline6,
+                ),
               ),
-            ),
-            _buildUniversityActions(context),
-          ],
+              _buildUniversityActions(context),
+            ],
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        tooltip: 'github',
-        child: const Icon(Icons.add),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          tooltip: 'github',
+          child: const Icon(Icons.add),
+        ),
       ),
     );
   }
@@ -143,7 +148,38 @@ class _UniversityDetailsState extends State<UniversityDetails> {
               hintText: "",
               suffixStyle: const TextStyle(fontSize: 12),
             ),
-          )
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 10, top: 20),
+            child: Text(
+              "Agregar una imagen",
+              style: Theme.of(context).textTheme.subtitle1,
+            ),
+          ),
+          Center(
+            child: TextButton(
+              style: TextButton.styleFrom(
+                primary: Colors.blue,
+                textStyle: const TextStyle(fontSize: 16, color: Colors.blue),
+              ),
+              onPressed: () {
+                print("");
+              },
+              child: const Text('DESDE LA GALERIA'),
+            ),
+          ),
+          Center(
+            child: TextButton(
+              style: TextButton.styleFrom(
+                primary: Colors.blue,
+                textStyle: const TextStyle(fontSize: 16, color: Colors.blue),
+              ),
+              onPressed: () {
+                print("");
+              },
+              child: const Text('DESDE LA CAMARA'),
+            ),
+          ),
         ],
       ),
     );
