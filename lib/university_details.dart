@@ -8,12 +8,20 @@ import 'package:tyba_flutter_challenge/styles.dart';
 import 'package:image_picker/image_picker.dart';
 
 class UniversityDetails extends StatefulWidget {
+  const UniversityDetails({Key? key}) : super(key: key);
+
   @override
   State<UniversityDetails> createState() => _UniversityDetailsState();
 }
 
 class _UniversityDetailsState extends State<UniversityDetails> {
   late University _university;
+  final myController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   void pickUpImage(ImageSource source) async {
     UniversityProvider _universityProvider =
@@ -28,7 +36,9 @@ class _UniversityDetailsState extends State<UniversityDetails> {
         _university.imageUrl = image.path;
       });
     } catch (e) {
-      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('No se pudo agregar imagen'),
+      ));
     }
   }
 
@@ -52,6 +62,11 @@ class _UniversityDetailsState extends State<UniversityDetails> {
   @override
   Widget build(BuildContext context) {
     _university = ModalRoute.of(context)!.settings.arguments as University;
+    if (myController.text.isEmpty) {
+      myController.text = _university.numbersOfStudents != null
+          ? _university.numbersOfStudents.toString()
+          : "";
+    }
 
     return GestureDetector(
       onTap: () {
@@ -89,7 +104,7 @@ class _UniversityDetailsState extends State<UniversityDetails> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 10, top: 30, left: 5),
                   child: Text(
-                    'Configuracion',
+                    'Configuración',
                     style: Theme.of(context).textTheme.headline6,
                   ),
                 ),
@@ -138,22 +153,22 @@ class _UniversityDetailsState extends State<UniversityDetails> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildItem(textLeft: "Name:", textRight: _university.name!),
-          _buildItem(textLeft: "Country:", textRight: _university.country),
+          _buildItem(textLeft: "Nombre:", textRight: _university.name!),
+          _buildItem(textLeft: "País:", textRight: _university.country),
           _buildItem(
-              textLeft: "Country code:", textRight: _university.alphaTwocode),
+              textLeft: "Codigo de país:", textRight: _university.alphaTwocode),
           _buildItem(
-              textLeft: "Numero de estudiantes",
+              textLeft: "Número de estudiantes",
               textRight: _university.numbersOfStudents != null
                   ? _university.numbersOfStudents.toString()
                   : 'Sin especificar'),
           _buildItem(
-              textLeft: "Domains:", textRight: _university.domains.join(',')),
+              textLeft: "Dominios:", textRight: _university.domains.join(',')),
           _buildItem(
-              textLeft: "Web_pages:",
+              textLeft: "Paginas web:",
               textRight: _university.webPages.join(',')),
           _buildItem(
-              textLeft: "Imagen:",
+              textLeft: "Imagen",
               textRight: _university.imageUrl == null ? "Si especificar" : ""),
           _university.imageUrl != null
               ? Padding(
@@ -195,6 +210,7 @@ class _UniversityDetailsState extends State<UniversityDetails> {
             ),
           ),
           TextField(
+            controller: myController,
             onChanged: _changeStudentsNumber,
             keyboardType: TextInputType.number,
             decoration: inputDecoration.copyWith(

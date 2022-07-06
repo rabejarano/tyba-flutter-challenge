@@ -85,12 +85,14 @@ class BasicAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Color backgroundColor;
   final List<int> flexs;
 
-  BasicAppBar(
-      {this.widgetLeft,
+  const BasicAppBar(
+      {Key? key,
+      this.widgetLeft,
       this.flexs = const [3, 8, 3],
       this.widgetCenter,
       this.widgetRight,
-      this.backgroundColor = Colors.red});
+      this.backgroundColor = Colors.red})
+      : super(key: key);
 
   @override
   Size get preferredSize => const Size(double.infinity, 60);
@@ -99,7 +101,7 @@ class BasicAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return Container(
       color: backgroundColor,
-      padding: EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: SafeArea(
         bottom: false,
         maintainBottomViewPadding: false,
